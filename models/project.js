@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Contribution Schema
+
 const contributionSchema = new mongoose.Schema(
   {
     donation: [
@@ -25,7 +25,7 @@ const contributionSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Project Schema
+
 const projectSchema = new mongoose.Schema(
   {
     projectImage: [{ type: String }],
@@ -50,7 +50,7 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Course Schema
+
 const courseSchema = new mongoose.Schema(
   {
     allCourses: [
@@ -126,7 +126,7 @@ const myAccountSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Setting Schema
+
 const settingSchema = new mongoose.Schema(
   {
     notification: {

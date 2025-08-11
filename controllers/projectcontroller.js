@@ -1,7 +1,6 @@
 const Project = require("../models/project");
 
 
-// Create Project
 const createProject = async (req, res) => {
   try {
     const {
@@ -42,7 +41,7 @@ const createProject = async (req, res) => {
   }
 };
 
-// Get All Projects
+
 const getAllProjects = async (req, res) => {
   try {
     const projects = await Project.find().sort({ createdAt: -1 });
@@ -56,7 +55,7 @@ const getAllProjects = async (req, res) => {
   }
 };
 
-// Get Project By ID
+
 const getProjectById = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -73,7 +72,7 @@ const getProjectById = async (req, res) => {
   }
 };
 
-// Update Project
+
 const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -91,7 +90,6 @@ const updateProject = async (req, res) => {
   }
 };
 
-// Delete Project
 const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -109,20 +107,20 @@ const deleteProject = async (req, res) => {
   }
 };
 
-// Create or update dashboard
+
 const upsertDashboard = async (req, res) => {
   try {
     const { userId, contribution, courses, certification, myAccount, setting } = req.body;
     let dashboard = await Dashboard.findOne({ userId });
     if (dashboard) {
-      // Update existing dashboard
+     
       dashboard.contribution = contribution || dashboard.contribution;
       dashboard.courses = courses || dashboard.courses;
       dashboard.certification = certification || dashboard.certification;
       dashboard.myAccount = myAccount || dashboard.myAccount;
       dashboard.setting = setting || dashboard.setting;
     } else {
-      // Create new dashboard
+      
       dashboard = new Dashboard({
         userId,
         contribution,
@@ -151,7 +149,6 @@ const getDashboard = async (req, res) => {
   }
 };
 
-// Delete dashboard
 const deleteDashboard = async (req, res) => {
   try {
     const { userId } = req.params;
