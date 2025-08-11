@@ -86,7 +86,7 @@ const courseSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Certification Schema
+
 const certificationSchema = new mongoose.Schema(
   {
     certificates: [
@@ -99,7 +99,7 @@ const certificationSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// My Account Schema
+
 const myAccountSchema = new mongoose.Schema(
   {
     accountAccess: {
