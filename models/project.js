@@ -151,7 +151,7 @@ const settingSchema = new mongoose.Schema(
   { _id: false }
 );
 
-// Dashboard Schema
+
 const dashboardSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -164,7 +164,7 @@ const dashboardSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Export all models in one object
+
 module.exports = {
   Project: mongoose.model("Project", projectSchema),
   Dashboard: mongoose.model("Dashboard", dashboardSchema),
