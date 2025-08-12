@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api/project", require("./routes/courseroute"));
+app.use("/api", require("./routes/courseroute"));
 
 
 let swaggerDocument;

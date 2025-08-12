@@ -11,18 +11,52 @@
     "http"
   ],
   "paths": {
-    "/api/project/": {
+    "/api/createCourse": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "thumbnail": {
+                  "example": "any"
+                },
+                "courseName": {
+                  "example": "any"
+                },
+                "language": {
+                  "example": "any"
+                },
+                "whatLearn": {
+                  "example": "any"
+                },
+                "topics": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "tags": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "Created"
           },
-          "400": {
-            "description": "Bad Request"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/api/allCourses": {
       "get": {
         "description": "",
         "responses": {
@@ -35,7 +69,66 @@
         }
       }
     },
-    "/api/project/{id}": {
+    "/api/getCourseByid/{id}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/updateCourse": {
+      "put": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/deleteCourse": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/getAllQuizzes/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -57,39 +150,27 @@
             "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/apiupdateQuiz": {
       "put": {
         "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/apideleteQuiz": {
       "delete": {
         "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
