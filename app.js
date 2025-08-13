@@ -7,7 +7,12 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/api", require("./routes/courseroute"));
+app.use("/courses", require("./routes/courseroute"));
+app.use("/myaccount", require("./routes/myaccountroutes"));
+app.use("/project", require("./routes/projectroute"));
+
+
+
 
 
 let swaggerDocument;
@@ -20,7 +25,7 @@ try {
 
 
 mongoose
-  .connect("mongodb+srv://huzaifaalics280:db786$@cluster0.koqyldh.mongodb.net/Iltezam")
+  .connect("mongodb+srv://huzaifaalics280:db786$@cluster0.koqyldh.mongodb.net/iltezam")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
