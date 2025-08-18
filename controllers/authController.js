@@ -1,47 +1,81 @@
 const User = require("../models/user");
-const jwt = require("jsonwebtoken");
-
+const Profile = require("../models/profileModel");
 
 const registerUser = async (req, res) => {
-  const { fullname, designation, email, password, organizationname, role } =
-    req.body;
+  const { fullName, lastName, occupation, location, about, skills, education } = req.body;
 
   try {
-    let existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "User already exists" });
+    let existingUser = await User.findOne({ fullName, lastName });
 
-    if (role !== "individual" && role !== "organization") {
-      return res.status(400).json({
-        message: 'Invalid user type. Must be "individual" or "organization"',
+    if (existingUser) {
+    
+      existingUser.occupation = occupation || existingUser.occupation;
+      existingUser.location = location || existingUser.location;
+      existingUser.about = about || existingUser.about;
+      existingUser.skills = skills || existingUser.skills;
+      existingUser.education = education || existingUser.education;
+
+      await existingUser.save();
+
+     
+      let existingProfile = await Profile.findOne({ userId: existingUser._id });
+
+      if (existingProfile) {
+        existingProfile.occupation = occupation || existingProfile.occupation;
+        existingProfile.location = location || existingProfile.location;
+        existingProfile.about = about || existingProfile.about;
+        existingProfile.skills = skills || existingProfile.skills;
+        existingProfile.education = education || existingProfile.education;
+
+        await existingProfile.save();
+      } else {
+       
+        const newProfile = new Profile({
+          userId: existingUser._id,
+          occupation,
+          location,
+          about,
+          skills,
+          education,
+        });
+        await newProfile.save();
+      }
+
+      return res.status(200).json({
+        message: "User and Profile updated successfully",
+        user: existingUser,
       });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
+    
     const newUser = new User({
-      fullName: fullname,
-      designation: designation || null,
-      email,
-      password,
-      organizationName: organizationname || null,
-      role,
-      verificationCode: otp,
+      fullName,
+      lastName,
+      occupation,
+      location,
+      about,
+      skills,
+      education,
     });
 
     await newUser.save();
 
-    await sendOtpEmail(email, otp);
+    
+    const newProfile = new Profile({
+      userId: newUser._id,
+      occupation,
+      location,
+      about,
+      skills,
+      education,
+    });
+
+    await newProfile.save();
 
     res.status(201).json({
-      message: "User Registered Successfully. OTP sent to email.",
-      user: {
-        id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email,
-        role: newUser.role,
-      },
-      token: token,
+      message: "User and Profile registered successfully",
+      user: newUser,
+      profile: newProfile,
     });
   } catch (err) {
     console.error("Registration error:", err);
@@ -49,4 +83,4 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, sendOtpEmail };
+module.exports = { registerUser };
