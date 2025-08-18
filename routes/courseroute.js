@@ -7,19 +7,15 @@ const {
   updateCourse,
   deleteCourse,
   getAllQuizzesAgainstCourse,
-  updateQuiz,
-  deleteQuiz,
+  updateQuiz
 } = require("../controllers/coursecontroller");
 
 router.post("/createCourse", createCourse);
 router.get("/allCourses", getAllCourses);
 router.get("/getCourseByid/:id", getCourseById);
-router.put("/updateCourse", updateCourse);
-router.delete("/deleteCourse", deleteCourse);
-
+router.put("/updateCourse/:id", updateCourse);
+router.delete("/deleteCourse/:id", deleteCourse);
 router.get("/getAllQuizzes/:id", getAllQuizzesAgainstCourse);
-
-router.put("updateQuiz", updateQuiz);
-router.delete("deleteQuiz", deleteQuiz);
+router.put("/updateQuiz/:id", updateQuiz);
 
 module.exports = router;

@@ -10,6 +10,7 @@ app.use(express.json());
 app.use("/courses", require("./routes/courseroute"));
 app.use("/myaccount", require("./routes/myaccountroutes"));
 app.use("/project", require("./routes/projectroute"));
+app.use("/profile", require("./routes/profileRoute"));
 
 
 
@@ -25,7 +26,7 @@ try {
 
 
 mongoose
-  .connect("mongodb+srv://huzaifaalics280:db786$@cluster0.koqyldh.mongodb.net/iltezam")
+  .connect("mongodb+srv://huzaifaalics280:db786$@cluster0.koqyldh.mongodb.net/Iltezam")
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
