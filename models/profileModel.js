@@ -8,9 +8,7 @@ const profileSchema = new mongoose.Schema({
   about: String,
   skills: [String], 
   education: {
-    degree: String,
-    university: String,
-    year: Number
+    type: String,
   }
 });
 

@@ -5,12 +5,14 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
-    },
 
+    },
     fullName: {
       type: String,
       required: true,
+    },
+    designation: {
+      type: String,
     },
     CNIC: {
       type: String,
@@ -43,10 +45,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["individual", "organization"],
     },
-    verificationCode: {
-      type: String,
-      unique: true,
-    },
+ 
   },
   { timestamps: true }
 );

@@ -47,14 +47,10 @@ const createOrganization = async (req, res) => {
       shortBio,
       organizationImage,
       organizationTags,
-      // verificationCode: otp,
     });
 
     const saved = await newOrg.save();
 
-    
-    const message = `Your OTP has been successfully generated. Your verification code is: ${otp}`;
-    await sendOtpEmail(email, message);
 
     res.status(201).json({
       message: "Organization created successfully. OTP sent to email.",
@@ -69,6 +65,5 @@ const createOrganization = async (req, res) => {
 
 module.exports = {
   createOrganization,
-  sendOtpEmail
 };
 

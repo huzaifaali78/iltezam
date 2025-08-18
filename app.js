@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use("/user", require("./routes/authRoute"));
 app.use("/courses", require("./routes/courseroute"));
 app.use("/myaccount", require("./routes/myaccountroutes"));
 app.use("/project", require("./routes/projectroute"));
