@@ -12,6 +12,11 @@ app.use("/courses", require("./routes/courseroute"));
 app.use("/myaccount", require("./routes/myaccountroutes"));
 app.use("/project", require("./routes/projectroute"));
 app.use("/profile", require("./routes/profileRoute"));
+app.use("/post", require("./routes/postRoute"));
+app.use("/comment", require("./routes/postRoute"));
+
+
+
 
 
 
