@@ -15,12 +15,14 @@ const postSchema = new mongoose.Schema(
 
     profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
 
-    comments: [ {
+    comments: [
+      {
         content: { type: String, required: true },
-        post: { type: mongoose.Schema.Types.ObjectId, ref: "Post"},
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User", },
+        post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
       },
-      { timestamps: true }],
+      { timestamps: true },
+    ],
 
     likedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     sharedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

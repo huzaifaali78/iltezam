@@ -1,4 +1,5 @@
 const Post = require("../models/postModel");
+const Comment = require("../models/commentModel"); // assuming you have Comment model
 const Profile = require("../models/profileModel");
 
 
@@ -7,13 +8,11 @@ const createPost = async (req, res) => {
     const { content, imageUrl, videoUrl } = req.body;
     const userId = req.user.id;
 
-   
     const post = await Post.create({
       content,
       imageUrl,
       videoUrl,
       user: userId,
- 
     });
 
     res.status(201).json({ message: "Post created successfully", post });
@@ -22,12 +21,11 @@ const createPost = async (req, res) => {
   }
 };
 
-
+// EDIT POST
 const editPost = async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id);
-
     if (!post) return res.status(404).json({ message: "Post not found" });
     if (post.user.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized" });
@@ -40,7 +38,7 @@ const editPost = async (req, res) => {
   }
 };
 
-
+// DELETE POST
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -58,23 +56,19 @@ const deletePost = async (req, res) => {
   }
 };
 
-
+// LIKE POST
 const likePost = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const userId = req.user.id;
 
     const post = await Post.findById(id).populate("likedUsers");
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    const alreadyLiked = post.likedUsers.some(
-      (u) => u._id.toString() === userId
-    );
+    const alreadyLiked = post.likedUsers.some((u) => u._id.toString() === userId);
 
     if (alreadyLiked) {
-      post.likedUsers = post.likedUsers.filter(
-        (u) => u._id.toString() !== userId
-      );
+      post.likedUsers = post.likedUsers.filter((u) => u._id.toString() !== userId);
     } else {
       post.likedUsers.push(userId);
     }
@@ -91,18 +85,16 @@ const likePost = async (req, res) => {
   }
 };
 
-
+// SHARE POST
 const sharePost = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const userId = req.user.id;
 
     const post = await Post.findById(id).populate("sharedUsers");
     if (!post) return res.status(404).json({ message: "Post not found" });
 
-    const alreadyShared = post.sharedUsers.some(
-      (u) => u._id.toString() === userId
-    );
+    const alreadyShared = post.sharedUsers.some((u) => u._id.toString() === userId);
 
     if (!alreadyShared) {
       post.sharedUsers.push(userId);
@@ -116,7 +108,7 @@ const sharePost = async (req, res) => {
   }
 };
 
-
+// GET ALL POSTS
 const getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find()
@@ -128,7 +120,7 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-
+// GET POST BY ID
 const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
@@ -139,6 +131,8 @@ const getPostById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// CREATE COMMENT
 const createComment = async (req, res) => {
   try {
     const { content, post_id } = req.body;
@@ -158,9 +152,10 @@ const createComment = async (req, res) => {
   }
 };
 
+// DELETE COMMENT
 const deleteComment = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const userId = req.user.id;
 
     const comment = await Comment.findById(id).populate("post user");
@@ -175,7 +170,6 @@ const deleteComment = async (req, res) => {
 
     await Comment.findByIdAndDelete(id);
 
-    
     await Post.findByIdAndUpdate(comment.post._id, {
       $pull: { comments: comment._id },
     });
@@ -186,12 +180,56 @@ const deleteComment = async (req, res) => {
   }
 };
 
-
+// GET COMMENTS BY POST
 const getCommentsByPost = async (req, res) => {
   try {
     const { postId } = req.params;
     const comments = await Comment.find({ post: postId }).populate("user");
     res.json(comments);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getTopLikedPosts = async (req, res) => {
+  try {
+    const topLikedPosts = await Post.aggregate([
+      {
+        $project: {
+          content: 1,
+          user: 1,
+          likes: 1,
+          commentsCount: { $size: "$comments" },
+          createdAt: 1,
+        },
+      },
+      { $sort: { likes: -1 } },
+      { $limit: 5 },
+    ]);
+    res.json(topLikedPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+const getTopCommentedPosts = async (req, res) => {
+  try {
+    const topCommentedPosts = await Post.aggregate([
+      {
+        $project: {
+          content: 1,
+          user: 1,
+          likes: 1,
+          commentsCount: { $size: "$comments" },
+          createdAt: 1,
+        },
+      },
+      { $sort: { commentsCount: -1 } },
+      { $limit: 5 },
+    ]);
+    res.json(topCommentedPosts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -205,8 +243,9 @@ module.exports = {
   sharePost,
   getAllPosts,
   getPostById,
-    createComment,
-    deleteComment,
-    getCommentsByPost,
-    
+  createComment,
+  deleteComment,
+  getCommentsByPost,
+  getTopLikedPosts,
+  getTopCommentedPosts,
 };

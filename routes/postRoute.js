@@ -7,26 +7,37 @@ const {
   sharePost,
   getAllPosts,
   getPostById,
-    createComment,
-    deleteComment,
-    getCommentsByPost,
+  createComment,
+  deleteComment,
+  getCommentsByPost,
+  getTopLikedPosts,
+  getTopCommentedPosts,
 } = require("../controllers/postController");
 const tokenAuth = require("../middleware/authmiddleware");
 
 const router = express.Router();
 
+// Post CRUD
+router.post("/createPost", tokenAuth, createPost);
+router.put("/:id", editPost);
+router.delete("/:id", deletePost);
 
+// Like & Share
+router.post("/:id/like", likePost);
+router.post("/:id/share", sharePost);
 
-router.post("/createPost", tokenAuth, createPost);               // Create Post
-router.put("/:id", editPost);               // Edit Post
-router.delete("/:id", deletePost);          // Delete Post
-router.post("/:id/like", likePost);     
-router.post("/:id/share", sharePost);       // Share Post
-router.get("/", getAllPosts);               
-router.get("/:id", getPostById);     
+// Get Posts
+router.get("/", getAllPosts);
+router.get("/:id", getPostById);
+
+// Comments
 router.post("/", createComment);
-router.delete("/:id", deleteComment);            
-router.get("/post/:postId", getCommentsByPost);  
+router.delete("/:id", deleteComment);
+router.get("/post/:postId", getCommentsByPost);
 
+// Aggregation Routes
+router.get("/top-liked", getTopLikedPosts);
+router.get("/top-commented", getTopCommentedPosts);
 
 module.exports = router;
+
